@@ -30,7 +30,7 @@ class Drawer extends React.Component {
   static navigationOptions = ({navigation}) => {
 
     return{
-    title: 'Login Form',
+    title:'Drawer',
     headerStyle: {
       backgroundColor: '#075951',
     },

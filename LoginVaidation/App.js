@@ -6,11 +6,13 @@
  * @flow
  */
 
-import { createAppContainer } from 'react-navigation';
+import { createAppContainer ,createSwitchNavigator} from 'react-navigation';
 import { createStackNavigator } from 'react-navigation-stack';
 import Login from "./src/containers/Login";
 import Drawer from "./src/containers/Drawer";
 import Dashbord from "./src/containers/Dashbord";
+
+
 
 const AppNavigator = createStackNavigator({
   Login: {
@@ -24,4 +26,9 @@ const AppNavigator = createStackNavigator({
   }
 });
 
-export default createAppContainer(AppNavigator);
+const App=createSwitchNavigator({
+  Main: AppNavigator,
+  Drawer:Dashbord
+})
+
+export default createAppContainer(App);
