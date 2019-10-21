@@ -46,7 +46,7 @@ class Login extends React.Component {
       },
       headerTintColor: '#fff',
       headerRight: (
-        <TouchableOpacity onPress={() => navigation.navigate('Drawer')}>
+        <TouchableOpacity onPress={() => navigation.navigate('Dashbord')}>
           <Text style={{color: '#FCFCFC', fontSize: 18, paddingRight: 20}}>
             See More
           </Text>

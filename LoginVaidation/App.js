@@ -18,17 +18,22 @@ const AppNavigator = createStackNavigator({
   Login: {
     screen: Login,
   },
-  Drawer:{
-    screen:Drawer,
+  // Drawer: {
+  //   screen: Drawer,
+  // },
+  Dashbord: {
+    screen: Dashbord,
   },
-  Dashbord:{
-    screen:Dashbord,
-  }
-});
+  
+  })
 
-const App=createSwitchNavigator({
-  Main: AppNavigator,
-  Drawer:Dashbord
-})
 
-export default createAppContainer(App);
+  ///<Route path="
+const DrawerHeader=createSwitchNavigator({
+  stack : AppNavigator,
+  Drawer :Drawer
+
+}, )
+ 
+  /////" component={}/>
+  export default createAppContainer(DrawerHeader);

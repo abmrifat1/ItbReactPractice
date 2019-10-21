@@ -1,88 +1,63 @@
+/**
+ * Sample React Native App
+ * https://github.com/facebook/react-native
+ *
+ * @format
+ * @flow
+ */
+
 import React from 'react';
-import { SafeAreaView,
+
+import {
+  SafeAreaView,
   StyleSheet,
   ScrollView,
   View,
   Text,
   StatusBar,
-  TouchableOpacity,
-  TextInput,Item,
-  FlatList,
-  ImageBackground,HeaderButtons,Icon,
-  Button,Image} from 'react-native';
-import { createDrawerNavigator } from 'react-navigation-drawer';
-import { createAppContainer } from 'react-navigation';
-import MainBg from '../img/main-bg.jpg';
-import logo from '../img/logo.png';
-import Input from '../components/Input';
-import Btn from '../components/Button';
+  TouchableOpacity
+} from 'react-native';
 
-class MyHomeScreen extends React.Component {
-  static navigationOptions = {
-    drawerLabel: 'Home',
-  };
+import {
+  Header,
+  LearnMoreLinks,
+  Colors,
+  DebugInstructions,
+  ReloadInstructions,
+} from 'react-native/Libraries/NewAppScreen';
+
+class Drawer extends React.Component {
+  static navigationOptions = ({navigation}) => {
+
+    return{
+    title:'Dashbord',
+    headerStyle: {
+      backgroundColor: '#075951',
+    },
+    headerTintColor: '#fff',
+    headerRight: (
+      <TouchableOpacity onPress={()=>navigation.navigate("Drawer")}>
+        <Text style={{color: '#FCFCFC', fontSize: 18, paddingRight: 20}}>
+          Drawer++
+        </Text>
+      </TouchableOpacity>
+    ),
+  }};
 
   render() {
+    const{navigation}=this.props;
     return (
-      <View>
-        <Button
-        onPress={() => this.props.navigation.openDrawer()}
-        title="Drawer Menu"
-      />
-      <Text>This is Home page</Text>
-      </View>
-      
+      <>
+        <StatusBar barStyle="dark-content" />
+        <SafeAreaView>
+         
+          <Text>This is Dashbord page</Text>
+         
+          
+        </SafeAreaView>
+      </>
     );
   }
 }
 
-class MyNotificationsScreen extends React.Component {
-  static navigationOptions = {
-    drawerLabel: 'Notifications',
-  };
-
-  render() {
-    
-    return (
-      <View>
-         <Button
-      onPress={() => this.props.navigation.openDrawer()}
-      title="Drawer Menu"
-    />
-      <Button
-        onPress={() => this.props.navigation.goBack()}
-        title="Go back home"
-      />
-      </View>
-     
-    );
-  }
-}
-const DrawerLoad= createDrawerNavigator({
-  Home :{
-    screen:MyHomeScreen,
-  },
-  Notification :{
-    screen:MyNotificationsScreen,
-  },
-  
-})
-
-const Dashbord = createDrawerNavigator({
-  DrawerLoad: {
-    screen: DrawerLoad,
-  },
-  
-},{
-navigationOptions:({navigation})=>({
-
-  title:"Home",
-  headerStyle:{
-    backgroundColor:'black'
-  },headerTintColor:'white',headerTitleStyle:{
-    fontWeight: 'bold',
-  }
-})
-});
-
-export default Dashbord;
+export default Drawer;
