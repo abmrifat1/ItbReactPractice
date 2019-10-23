@@ -1,10 +1,16 @@
 //This is an example code for NavigationDrawer//
 import React, {Component} from 'react';
 //import react in our code.
-import {StyleSheet, View, Text} from 'react-native';
+import {StyleSheet, View, Text, BackHandler} from 'react-native';
 // import all basic components
 
 export default class Screen3 extends Component {
+  componentDidMount() {
+    BackHandler.addEventListener('hardwareBackPress', () => {
+      this.props.navigation.navigate('First');
+      return true;
+    });
+  }
   //Screen3 Component
   render() {
     return (

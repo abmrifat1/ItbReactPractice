@@ -14,12 +14,19 @@ import {
   ImageBackground,
   Button,
   Image,
+  BackHandler,
 } from 'react-native';
 // import all basic components
 import MainBg from '../image/main-bg.jpg';
 import logo from '../image/logo.png';
 
 export default class Login extends Component {
+  //   componentDidMount() {
+  //     BackHandler.addEventListener('hardwareBackPress', () => {
+  //       this.props.navigation.navigate('Screen1');
+  //       return true;
+  //     });
+  //   }
   //Screen1 Component
   render() {
     const {navigation} = this.props;

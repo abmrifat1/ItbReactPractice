@@ -15,9 +15,9 @@ import {View, Image, TouchableOpacity, Text} from 'react-native';
 import {createAppContainer} from 'react-navigation';
 import {createDrawerNavigator} from 'react-navigation-drawer';
 import {createStackNavigator} from 'react-navigation-stack';
-import Screen1 from './src/page/page1';
-import Screen2 from './src/page/page2';
-import Screen3 from './src/page/page3';
+import Page1 from './src/page/page1';
+import Page2 from './src/page/page2';
+import Page3 from './src/page/page3';
 import NextPage from './src/page/Next';
 import LoginPage from './src/page/Login';
 
@@ -38,7 +38,7 @@ const LogOut = createStackNavigator(
 const FirstActivity_StackNavigator = createStackNavigator({
   //All the screen from the Screen1 will be indexed here
   First: {
-    screen: Screen1,
+    screen: Page1,
     navigationOptions: ({navigation}) => ({
       title: 'Demo Screen 1',
       headerLeft: <NavigationDrawerStructure navigationProps={navigation} />,
@@ -53,7 +53,7 @@ const FirstActivity_StackNavigator = createStackNavigator({
 const Screen2_StackNavigator = createStackNavigator({
   //All the screen from the Screen2 will be indexed here
   Second: {
-    screen: Screen2,
+    screen: Page2,
     navigationOptions: ({navigation}) => ({
       title: 'Demo Screen 2',
       headerLeft: <NavigationDrawerStructure navigationProps={navigation} />,
@@ -69,7 +69,7 @@ const Screen3_StackNavigator = createStackNavigator({
   //All the screen from the Screen3 will be indexed here
 
   Third: {
-    screen: Screen3,
+    screen: Page3,
     navigationOptions: ({navigation}) => ({
       title: 'Demo Screen 3',
       headerLeft: <NavigationDrawerStructure navigationProps={navigation} />,
