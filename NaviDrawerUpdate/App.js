@@ -15,12 +15,25 @@ import {View, Image, TouchableOpacity, Text} from 'react-native';
 import {createAppContainer} from 'react-navigation';
 import {createDrawerNavigator} from 'react-navigation-drawer';
 import {createStackNavigator} from 'react-navigation-stack';
-import Screen1 from './src/container/page1';
-import Screen2 from './src/container/page2';
-import Screen3 from './src/container/page3';
-import NextPage from './src/container/Next';
+import Screen1 from './src/page/page1';
+import Screen2 from './src/page/page2';
+import Screen3 from './src/page/page3';
+import NextPage from './src/page/Next';
+import LoginPage from './src/page/Login';
 
 import NavigationDrawerStructure from './src/component/NavigationDrawerStructure';
+
+const LogOut = createStackNavigator(
+  //All the screen from the Screen1 will be indexed here
+  {
+    LoginPg: {
+      screen: LoginPage,
+    },
+  },
+  {
+    headerMode: 'none',
+  },
+);
 
 const FirstActivity_StackNavigator = createStackNavigator({
   //All the screen from the Screen1 will be indexed here
@@ -30,7 +43,7 @@ const FirstActivity_StackNavigator = createStackNavigator({
       title: 'Demo Screen 1',
       headerLeft: <NavigationDrawerStructure navigationProps={navigation} />,
       headerStyle: {
-        backgroundColor: '#FF9800',
+        backgroundColor: '#093333',
       },
       headerTintColor: '#fff',
     }),
@@ -45,7 +58,7 @@ const Screen2_StackNavigator = createStackNavigator({
       title: 'Demo Screen 2',
       headerLeft: <NavigationDrawerStructure navigationProps={navigation} />,
       headerStyle: {
-        backgroundColor: '#FF9800',
+        backgroundColor: '#78000C',
       },
       headerTintColor: '#fff',
     }),
@@ -66,7 +79,7 @@ const Screen3_StackNavigator = createStackNavigator({
         </TouchableOpacity>
       ),
       headerStyle: {
-        backgroundColor: '#FF9800',
+        backgroundColor: '#ff0000',
       },
       headerTintColor: '#fff',
     }),
@@ -83,7 +96,7 @@ const Screen3_StackNavigator = createStackNavigator({
         </TouchableOpacity>
       ),
       headerStyle: {
-        backgroundColor: '#FF9800',
+        backgroundColor: '#0B2147',
       },
       headerTintColor: '#fff',
     }),
@@ -101,36 +114,47 @@ const Screen3_StackNavigator = createStackNavigator({
         </TouchableOpacity>
       ),
       headerStyle: {
-        backgroundColor: '#FF9800',
+        backgroundColor: '#400B39',
       },
       headerTintColor: '#fff',
     }),
   },
 });
 
-const DrawerNavigatorExample = createDrawerNavigator({
-  //Drawer Optons and indexing
-  Screen1: {
-    //Title
-    screen: FirstActivity_StackNavigator,
-    navigationOptions: {
-      drawerLabel: 'Demo Screen 1',
+const DrawerNavigatorExample = createDrawerNavigator(
+  {
+    //Drawer Optons and indexing
+
+    Screen1: {
+      //Title
+      screen: FirstActivity_StackNavigator,
+      navigationOptions: {
+        drawerLabel: 'Demo Screen 1',
+      },
+    },
+    Screen2: {
+      //Title
+      screen: Screen2_StackNavigator,
+      navigationOptions: {
+        drawerLabel: 'Demo Screen 2',
+      },
+    },
+    Screen3: {
+      //Title
+      screen: Screen3_StackNavigator,
+      navigationOptions: {
+        drawerLabel: 'Demo Screen 3',
+      },
+    },
+    LogOut: {
+      //Title
+      screen: LogOut,
+      navigationOptions: {
+        drawerLabel: 'Logout',
+      },
     },
   },
-  Screen2: {
-    //Title
-    screen: Screen2_StackNavigator,
-    navigationOptions: {
-      drawerLabel: 'Demo Screen 2',
-    },
-  },
-  Screen3: {
-    //Title
-    screen: Screen3_StackNavigator,
-    navigationOptions: {
-      drawerLabel: 'Demo Screen 3',
-    },
-  },
-});
+  {initialRouteName: 'LogOut'},
+);
 
 export default createAppContainer(DrawerNavigatorExample);

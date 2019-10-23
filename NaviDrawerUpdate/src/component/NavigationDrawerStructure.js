@@ -1,6 +1,5 @@
 import React from 'react';
 //import react in our code.
-//import react in our code.
 
 import {View, Image, TouchableOpacity} from 'react-native';
 
