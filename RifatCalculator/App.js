@@ -15,81 +15,148 @@ import {
   TouchableOpacity,
 } from 'react-native';
 
-import {
-  Header,
-  LearnMoreLinks,
-  Colors,
-  DebugInstructions,
-  ReloadInstructions,
-} from 'react-native/Libraries/NewAppScreen';
-
 class App extends React.Component {
+  constructor(props) {
+    super(props);
+    this.state = {
+      result: '0',
+      operator: '',
+    };
+  }
+  handleClick = number => {
+    let {result} = this.state;
+    var num = result + number;
+    this.setState({result: num});
+  };
+  handleEqualClick = () => {
+    let {result} = this.state;
+    this.setState({result: result});
+  };
+
+  handleOperation = operaTor => {
+    let {result, operator} = this.state;
+
+    if (result !== 0) {
+      this.setState({operator: operaTor});
+      result = '' + result + operator;
+      this.setState({result: result});
+    } else {
+      this.setState({operator: operaTor});
+      result = '' + result + operaTor;
+      this.setState({result: +result});
+    }
+  };
+
+  handleDeleteClick = () => {
+    var num = this.state.result;
+    var newResult = num.slice(0, num.length - 1);
+    this.setState({result: newResult});
+  };
   render() {
+    const {result} = this.state;
     return (
       <>
         <SafeAreaView style={styles.mainContent}>
           <View style={styles.mainContent}>
             <View style={styles.screenContent}>
-              <Text style={styles.screenText}>37373476</Text>
+              <Text style={styles.screenText}>{result}</Text>
             </View>
             <View style={styles.buttonContent}>
               <View style={styles.btnColumn}>
-                <TouchableOpacity style={styles.singleBtn}>
+                <TouchableOpacity
+                  onPress={() => this.handleClick('7')}
+                  style={styles.singleBtn}>
                   <Text style={styles.item}>7</Text>
                 </TouchableOpacity>
-                <TouchableOpacity style={styles.singleBtn}>
+                <TouchableOpacity
+                  onPress={() => this.handleClick('4')}
+                  style={styles.singleBtn}>
                   <Text style={styles.item}>4</Text>
                 </TouchableOpacity>
-                <TouchableOpacity style={styles.singleBtn}>
+                <TouchableOpacity
+                  onPress={() => this.handleClick('1')}
+                  style={styles.singleBtn}>
                   <Text style={styles.item}>1</Text>
                 </TouchableOpacity>
-                <TouchableOpacity style={styles.singleBtn}>
+                <TouchableOpacity
+                  onPress={() => this.handleClick('.')}
+                  style={styles.singleBtn}>
                   <Text style={styles.item}>.</Text>
                 </TouchableOpacity>
               </View>
               <View style={styles.btnColumn}>
-                <TouchableOpacity style={styles.singleBtn}>
+                <TouchableOpacity
+                  onPress={() => this.handleClick('8')}
+                  style={styles.singleBtn}>
                   <Text style={styles.item}>8</Text>
                 </TouchableOpacity>
-                <TouchableOpacity style={styles.singleBtn}>
+                <TouchableOpacity
+                  onPress={() => this.handleClick('5')}
+                  style={styles.singleBtn}>
                   <Text style={styles.item}>5</Text>
                 </TouchableOpacity>
-                <TouchableOpacity style={styles.singleBtn}>
+                <TouchableOpacity
+                  onPress={() => this.handleClick('2')}
+                  style={styles.singleBtn}>
                   <Text style={styles.item}>2</Text>
                 </TouchableOpacity>
-                <TouchableOpacity style={styles.singleBtn}>
+                <TouchableOpacity
+                  onPress={() => this.handleClick('0')}
+                  style={styles.singleBtn}>
                   <Text style={styles.item}>0</Text>
                 </TouchableOpacity>
               </View>
               <View style={styles.btnColumn}>
-                <TouchableOpacity style={styles.singleBtn}>
+                <TouchableOpacity
+                  onPress={() => this.handleClick('9')}
+                  style={styles.singleBtn}>
                   <Text style={styles.item}>9</Text>
                 </TouchableOpacity>
-                <TouchableOpacity style={styles.singleBtn}>
+                <TouchableOpacity
+                  onPress={() => this.handleClick('6')}
+                  style={styles.singleBtn}>
                   <Text style={styles.item}>6</Text>
                 </TouchableOpacity>
-                <TouchableOpacity style={styles.singleBtn}>
+                <TouchableOpacity
+                  onPress={() => this.handleClick('3')}
+                  style={styles.singleBtn}>
                   <Text style={styles.item}>3</Text>
                 </TouchableOpacity>
-                <TouchableOpacity style={styles.singleBtn}>
+                <TouchableOpacity
+                  onPress={() => {
+                    this.handleDeleteClick();
+                  }}
+                  style={styles.singleBtn}>
                   <Text style={styles.deleteItem}>DEL</Text>
                 </TouchableOpacity>
               </View>
               <View style={styles.btnOparetion}>
-                <TouchableOpacity style={styles.singleBtn}>
-                  <Text style={styles.operationItem}>÷</Text>
+                <TouchableOpacity
+                  onPress={() => this.handleOperation('÷')}
+                  style={styles.singleBtn}>
+                  <Text style={styles.operatorItem}>÷</Text>
                 </TouchableOpacity>
-                <TouchableOpacity style={styles.singleBtn}>
-                  <Text style={styles.operationItem}>x</Text>
+                <TouchableOpacity
+                  onPress={() => this.handleOperation('x')}
+                  style={styles.singleBtn}>
+                  <Text style={styles.operatorItem}>x</Text>
                 </TouchableOpacity>
-                <TouchableOpacity style={styles.singleBtn}>
-                  <Text style={styles.operationItem}>-</Text>
+                <TouchableOpacity
+                  onPress={() => this.handleOperation('-')}
+                  style={styles.singleBtn}>
+                  <Text style={styles.operatorItem}>-</Text>
                 </TouchableOpacity>
-                <TouchableOpacity style={styles.singleBtn}>
-                  <Text style={styles.operationItem}>+</Text>
+                <TouchableOpacity
+                  onPress={() => this.handleOperation('+')}
+                  style={styles.singleBtn}>
+                  <Text style={styles.operatorItem}>+</Text>
                 </TouchableOpacity>
-                <TouchableOpacity style={styles.singleBtn}>
-                  <Text style={styles.operationEqualItem}>=</Text>
+                <TouchableOpacity
+                  onPress={() => {
+                    this.handleEqualClick();
+                  }}
+                  style={styles.singleBtn}>
+                  <Text style={styles.equalItem}>=</Text>
                 </TouchableOpacity>
               </View>
             </View>
@@ -121,15 +188,16 @@ const styles = StyleSheet.create({
   btnOparetion: {justifyContent: 'space-around', flex: 1},
   singleBtn: {alignSelf: 'center'},
   item: {fontSize: 35, color: '#706C6C', fontWeight: '700'},
-  operationItem: {
+  operatorItem: {
     fontSize: 25,
     marginTop: 15,
     color: '#706C6C',
     fontWeight: '700',
+    padding: 10,
   },
-  operationEqualItem: {
+  equalItem: {
     fontSize: 25,
-    marginBottom: 10,
+    marginBottom: 15,
     backgroundColor: '#31BDC4',
     borderRadius: 50,
     paddingLeft: 20,
