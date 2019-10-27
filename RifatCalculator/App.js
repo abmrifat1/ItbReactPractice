@@ -1,11 +1,3 @@
-/**
- * Sample React Native App
- * https://github.com/facebook/react-native
- *
- * @format
- * @flow
- */
-
 import React from 'react';
 import {
   SafeAreaView,
@@ -14,20 +6,24 @@ import {
   Text,
   TouchableOpacity,
 } from 'react-native';
-
 class App extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
       result: 0,
       operator: '',
+      arrayOfNumber: [''],
+      arrayOfOperator: [''],
+      value: '',
     };
   }
   handleClick = number => {
-    let {result} = this.state;
+    let {result, arrayOfNumber} = this.state;
     if (result !== 0) {
+      arrayOfNumber = '' + result + number;
       result = '' + result + number;
       this.setState({result: result});
+      this.setState({arrayOfNumber: '' + arrayOfNumber});
     } else {
       result = '' + number;
       this.setState({result: +result});
@@ -35,25 +31,95 @@ class App extends React.Component {
   };
   handlePointClick = point => {
     let {result} = this.state;
-    if (result !== 0) {
+    if (result === 0 || result === '') {
+      result = '' + result + point;
+      this.setState({result: result});
+    } else if (result !== 0) {
       let splitResult = result;
       splitResult = '' + splitResult;
       splitResult = splitResult.split('');
-      for (var i = 0; i < splitResult.length; i++) {
-        if (splitResult[i] === point) {
-          this.setState({result: result});
-        } else {
-          result = '' + result + point;
-          this.setState({result: result});
-        }
+      var length = splitResult.length - 1;
+      if (splitResult[length] === '.') {
+        this.setState({result: result});
+      } else {
+        result = '' + result + point;
+        this.setState({result: result});
       }
     } else {
       result = '' + result + point;
       this.setState({result: +result});
     }
   };
+  handleOperation = operatorSign => {
+    let {result, arrayOfOperator, arrayOfNumber, newArray} = this.state;
+    if (result === 0 || result === '') {
+      this.setState({result: result});
+    } else if (result !== 0) {
+      let splitResult = result;
+      splitResult = '' + splitResult;
+      splitResult = splitResult.split('');
+
+      var length = splitResult.length - 1;
+      if (
+        splitResult[length] === '+' ||
+        splitResult[length] === '-' ||
+        splitResult[length] === 'x' ||
+        splitResult[length] === '÷'
+      ) {
+        this.setState({result: result});
+      } else {
+        this.setState({operator: operatorSign});
+        result = '' + result + operatorSign;
+        arrayOfOperator = '' + arrayOfOperator + operatorSign;
+        this.setState({arrayOfOperator: '' + arrayOfOperator});
+        this.setState({result: result});
+      }
+    } else {
+      this.setState({operator: operatorSign});
+      result = '' + result + operatorSign;
+      this.setState({result: +result});
+    }
+  };
+  handleEqualBtnClick = () => {
+    let {result, arrayOfNumber, arrayOfOperator} = this.state;
+    arrayOfNumber = '' + arrayOfNumber;
+    arrayOfNumber = arrayOfNumber.split('+');
+    //  arrayOfNumber = arrayOfNumber.split('-');
+    //  arrayOfNumber = arrayOfNumber.split('x');
+    //  arrayOfNumber = arrayOfNumber.split('÷');
+    //  arrayOfOperator = arrayOfOperator.split('');
+    let length = arrayOfOperator.length;
+    let newResult;
+    for (var i = 0; i < length; i++) {
+      if (result !== 0 && arrayOfOperator[i] === '+') {
+        arrayOfNumber[i + 1] =
+          parseFloat(arrayOfNumber[i]) + parseFloat(arrayOfNumber[i + 1]);
+        newResult = arrayOfNumber[i + 1];
+        // this.setState({result: arrayOfNumber[i + 1]});
+      }
+
+      if (result !== 0 && arrayOfOperator[i] === '-') {
+        arrayOfNumber[i + 1] =
+          parseFloat(arrayOfNumber[i]) - parseFloat(arrayOfNumber[i + 1]);
+        newResult = arrayOfNumber[i + 1];
+      }
+      if (result !== 0 && arrayOfOperator[i] === '÷') {
+        arrayOfNumber[i + 1] = arrayOfNumber[i] / arrayOfNumber[i + 1];
+      }
+      if (result !== 0 && arrayOfOperator[i] === 'x') {
+        arrayOfNumber[i + 1] =
+          parseFloat(arrayOfNumber[i]) * parseFloat(arrayOfNumber[i + 1]);
+        newResult = arrayOfNumber[i + 1];
+      }
+      this.setState({result: '' + newResult});
+    }
+    arrayOfNumber = [''];
+    this.setState({arrayOfNumber: '' + arrayOfNumber});
+    arrayOfOperator = '';
+    this.setState({arrayOfOperator: '' + arrayOfOperator});
+  };
   handleEqualClick = () => {
-    let {result, operator} = this.state;
+    let {result, operator, arrayOfNumber, arrayOfOperator} = this.state;
     if (result !== 0 && operator === '+') {
       let newResult = 0;
       result = result.split('+');
@@ -98,36 +164,10 @@ class App extends React.Component {
     } else {
       this.setState({result: result});
     }
-  };
-  equalItem = () => {};
-
-  handleOperation = operatorSign => {
-    let {result} = this.state;
-    if (result === 0 || result === '') {
-      this.setState({result: result});
-    } else if (result !== 0) {
-      let splitResult = result;
-      splitResult = '' + splitResult;
-      splitResult = splitResult.split('');
-
-      var length = splitResult.length - 1;
-      if (
-        splitResult[length] === '+' ||
-        splitResult[length] === '-' ||
-        splitResult[length] === 'x' ||
-        splitResult[length] === '÷'
-      ) {
-        this.setState({result: result});
-      } else {
-        this.setState({operator: operatorSign});
-        result = '' + result + operatorSign;
-        this.setState({result: result});
-      }
-    } else {
-      this.setState({operator: operatorSign});
-      result = '' + result + operatorSign;
-      this.setState({result: +result});
-    }
+    arrayOfNumber = [''];
+    this.setState({arrayOfNumber: '' + arrayOfNumber});
+    arrayOfOperator = '';
+    this.setState({arrayOfOperator: '' + arrayOfOperator});
   };
 
   handleDeleteClick = () => {
@@ -142,13 +182,15 @@ class App extends React.Component {
     }
   };
   render() {
-    const {result} = this.state;
+    const {result, arrayOfOperator, arrayOfNumber} = this.state;
     return (
       <>
         <SafeAreaView style={styles.mainContent}>
           <View style={styles.mainContent}>
             <View style={styles.screenContent}>
               <Text style={styles.screenText}>{result}</Text>
+              <Text style={styles.screenText}>{arrayOfNumber}</Text>
+              <Text style={styles.screenText}>{arrayOfOperator}</Text>
             </View>
             <View style={styles.buttonContent}>
               <View style={styles.btnColumn}>
@@ -241,8 +283,11 @@ class App extends React.Component {
                   <Text style={styles.operatorItem}>+</Text>
                 </TouchableOpacity>
                 <TouchableOpacity
+                  // onPress={() => {
+                  //   this.handleEqualClick();
+                  // }}
                   onPress={() => {
-                    this.handleEqualClick();
+                    this.handleEqualBtnClick();
                   }}
                   style={styles.singleBtn}>
                   <Text style={styles.equalItem}>=</Text>
