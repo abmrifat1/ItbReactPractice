@@ -83,19 +83,24 @@ class App extends React.Component {
   handleEqualBtnClick = () => {
     let {result, arrayOfNumber, arrayOfOperator} = this.state;
     arrayOfNumber = '' + arrayOfNumber;
-    arrayOfNumber = arrayOfNumber.split('+');
-    //  arrayOfNumber = arrayOfNumber.split('-');
-    //  arrayOfNumber = arrayOfNumber.split('x');
-    //  arrayOfNumber = arrayOfNumber.split('÷');
-    //  arrayOfOperator = arrayOfOperator.split('');
+    arrayOfNumber = arrayOfNumber.split(/[\-+x÷]+/);
     let length = arrayOfOperator.length;
-    let newResult;
+    let newResult = '';
     for (var i = 0; i < length; i++) {
+      if (result !== 0 && arrayOfOperator[i] === '÷') {
+        arrayOfNumber[i + 1] =
+          parseFloat(arrayOfNumber[i]) / parseFloat(arrayOfNumber[i + 1]);
+        newResult = arrayOfNumber[i + 1];
+      }
+      if (result !== 0 && arrayOfOperator[i] === 'x') {
+        arrayOfNumber[i + 1] =
+          parseFloat(arrayOfNumber[i]) * parseFloat(arrayOfNumber[i + 1]);
+        newResult = arrayOfNumber[i + 1];
+      }
       if (result !== 0 && arrayOfOperator[i] === '+') {
         arrayOfNumber[i + 1] =
           parseFloat(arrayOfNumber[i]) + parseFloat(arrayOfNumber[i + 1]);
         newResult = arrayOfNumber[i + 1];
-        // this.setState({result: arrayOfNumber[i + 1]});
       }
 
       if (result !== 0 && arrayOfOperator[i] === '-') {
@@ -103,14 +108,7 @@ class App extends React.Component {
           parseFloat(arrayOfNumber[i]) - parseFloat(arrayOfNumber[i + 1]);
         newResult = arrayOfNumber[i + 1];
       }
-      if (result !== 0 && arrayOfOperator[i] === '÷') {
-        arrayOfNumber[i + 1] = arrayOfNumber[i] / arrayOfNumber[i + 1];
-      }
-      if (result !== 0 && arrayOfOperator[i] === 'x') {
-        arrayOfNumber[i + 1] =
-          parseFloat(arrayOfNumber[i]) * parseFloat(arrayOfNumber[i + 1]);
-        newResult = arrayOfNumber[i + 1];
-      }
+
       this.setState({result: '' + newResult});
     }
     arrayOfNumber = [''];
