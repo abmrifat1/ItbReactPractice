@@ -5,15 +5,18 @@
  * @format
  * @flow
  */
+import Icon from 'react-native-vector-icons/FontAwesome';
 
 import React from 'react';
 import {
   SafeAreaView,
   StyleSheet,
   ScrollView,
+  Dimensions,
   View,
   Text,
   StatusBar,
+  TextInput,
 } from 'react-native';
 
 import {
@@ -23,54 +26,116 @@ import {
   DebugInstructions,
   ReloadInstructions,
 } from 'react-native/Libraries/NewAppScreen';
+import Card from './components/NewCard';
 
-const App: () => React$Node = () => {
-  return (
-    <>
-      <StatusBar barStyle="dark-content" />
-      <SafeAreaView>
-        <ScrollView
-          contentInsetAdjustmentBehavior="automatic"
-          style={styles.scrollView}>
-          <Header />
-          {global.HermesInternal == null ? null : (
-            <View style={styles.engine}>
-              <Text style={styles.footer}>Engine: Hermes</Text>
-            </View>
-          )}
-          <View style={styles.body}>
-            <View style={styles.sectionContainer}>
-              <Text style={styles.sectionTitle}>Step One</Text>
-              <Text style={styles.sectionDescription}>
-                Edit <Text style={styles.highlight}>App.js</Text> to change this
-                screen and then come back to see your edits.
+class App extends React.Component {
+  constructor(props) {
+    super(props);
+    this.state = {
+      orientation: 'portrait',
+    };
+  }
+  componentDidMount() {
+    Dimensions.addEventListener('change', () => {
+      this.getOrientation();
+    });
+  }
+  getOrientation = () => {
+    if (this.refs.rootView) {
+      if (Dimensions.get('window').width < Dimensions.get('window').height) {
+        this.setState({orientation: 'portrait'});
+      } else {
+        this.setState({orientation: 'landscape'});
+      }
+    }
+  };
+  render() {
+    const {orientation} = this.state;
+    const myButton = (
+      <Icon name="facebook" size={30} marginTop={30} color="blue"></Icon>
+    );
+    const displayText = (
+      <View>
+        <Text
+          style={{
+            justifyContent: 'center',
+            alignSelf: 'center',
+            fontSize: 50,
+          }}>
+          {orientation}
+        </Text>
+        <Text
+          style={{
+            justifyContent: 'center',
+            alignSelf: 'center',
+            fontSize: 50,
+          }}>
+          {myButton}
+        </Text>
+      </View>
+    );
+    const displayTextLarge = (
+      <View
+        style={{
+          flexDirection: 'row',
+          justifyContent: 'space-between',
+          padding: 20,
+        }}>
+        <Text
+          style={{
+            justifyContent: 'center',
+            alignSelf: 'center',
+            fontSize: 50,
+          }}>
+          {myButton}
+        </Text>
+        <Text
+          style={{
+            justifyContent: 'center',
+            alignSelf: 'center',
+            fontSize: 50,
+          }}>
+          {orientation}
+        </Text>
+      </View>
+    );
+    return (
+      <>
+        <StatusBar barStyle="dark-content" ref="rootView" />
+        <SafeAreaView>
+          <ScrollView>
+            {orientation === 'portrait' ? displayText : displayTextLarge}
+            <TextInput
+              style={{
+                borderBottomColor: 'black',
+                borderBottomWidth: 1,
+                margin: 10,
+                padding: 20,
+                backgroundColor: '#DDDD',
+                width: '90%',
+                justifyContent: 'center',
+                alignSelf: 'center',
+              }}
+            />
+            <Card>
+              <Text
+                style={{
+                  fontSize: 30,
+                  fontFamily: 'SFUIDisplay-Bold',
+                  padding: 20,
+                }}>
+                {/* SFUIDisplay-Light */}
+                react-native/Libraries/NewAppScreen
+                react-native/Libraries/NewAppScreen
+                react-native/Libraries/NewAppScreen
               </Text>
-            </View>
-            <View style={styles.sectionContainer}>
-              <Text style={styles.sectionTitle}>See Your Changes</Text>
-              <Text style={styles.sectionDescription}>
-                <ReloadInstructions />
-              </Text>
-            </View>
-            <View style={styles.sectionContainer}>
-              <Text style={styles.sectionTitle}>Debug</Text>
-              <Text style={styles.sectionDescription}>
-                <DebugInstructions />
-              </Text>
-            </View>
-            <View style={styles.sectionContainer}>
-              <Text style={styles.sectionTitle}>Learn More</Text>
-              <Text style={styles.sectionDescription}>
-                Read the docs to discover what to do next:
-              </Text>
-            </View>
-            <LearnMoreLinks />
-          </View>
-        </ScrollView>
-      </SafeAreaView>
-    </>
-  );
-};
+            </Card>
+          </ScrollView>
+        </SafeAreaView>
+      </>
+    );
+  }
+}
 
 const styles = StyleSheet.create({
   scrollView: {
