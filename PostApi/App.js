@@ -26,6 +26,7 @@ import {
 
 const App = () => {
   const [employeer, setEmployeer] = useState(null);
+  const [length, setLenght] = useState(null);
   const BaseUrl = 'http://dummy.restapiexample.com/api/v1';
   const postApi = async () => {
     const parameters = {
@@ -40,9 +41,12 @@ const App = () => {
   };
   const getApi = async () => {
     const response = await axios.get(BaseUrl + '/employees');
+    const totalLenght = response.data;
     console.log(response);
     if (employeer == null) {
       setEmployeer(response);
+      setLenght(totalLenght.length - 2);
+      console.log(length);
     }
   };
 
