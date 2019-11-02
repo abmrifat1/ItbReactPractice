@@ -19,6 +19,7 @@ import {
   Dimensions,
   TextInput,
 } from 'react-native';
+import axios from 'axios';
 
 import {
   LearnMoreLinks,
@@ -46,21 +47,27 @@ class App extends React.Component {
     this.state = {
       screeHight: Dimensions.get('window').height,
       orientation: 'portrait',
+      userName: '',
+      password: '',
+      message: '',
     };
   }
 
-  componentDidMount() {
-    Dimensions.addEventListener('change', () => {
-      this.getOrientation();
-    });
-  }
-  getOrientation = () => {
-    if (this.refs.rootView) {
-      if (Dimensions.get('window').width < Dimensions.get('window').height) {
-        this.setState({orientation: 'portrait'});
-      } else {
-        this.setState({orientation: 'landscape'});
-      }
+  submitFunction = async () => {
+    let {userName, password, message} = this.state;
+    const BaseUrl = 'http://test.sequenzainc.com';
+    const parameters = {
+      username: userName,
+      password: password,
+    };
+    const headers = {headers: {Accept: 'application/json, text/plain, */*'}};
+    const dataPost = await axios.post(
+      BaseUrl + '/api/auth/login',
+      parameters,
+      headers,
+    );
+    if (dataPost) {
+      this.setState({message: dataPost.status});
     }
   };
 
@@ -77,10 +84,18 @@ class App extends React.Component {
           <CardItem>
             <View style={styles.inputField}>
               <TextInput
+                onChangeText={value => {
+                  this.setState({userName: value});
+                  console.log(userName);
+                }}
                 placeholder="Username"
                 underlineColorAndroid="#111212"
                 style={styles.inputBox}></TextInput>
               <TextInput
+                onChangeText={value => {
+                  this.setState({password: value});
+                  console.log(password);
+                }}
                 placeholder="Password"
                 underlineColorAndroid="#111212"
                 style={styles.inputBox}></TextInput>
@@ -88,7 +103,11 @@ class App extends React.Component {
           </CardItem>
           <CardItem>
             <View style={styles.btn}>
-              <Button title="Sign In" color="#7D162E" />
+              <Button
+                title="Sign In"
+                onPress={this.submitFunction}
+                color="#7D162E"
+              />
             </View>
           </CardItem>
           <Text style={styles.footer}>
@@ -110,10 +129,18 @@ class App extends React.Component {
           <CardItem>
             <View style={styles.inputField}>
               <TextInput
+                onChangeText={value => {
+                  this.setState({userName: value});
+                  console.log(userName);
+                }}
                 placeholder="Username"
                 underlineColorAndroid="#111212"
                 style={styles.inputBox}></TextInput>
               <TextInput
+                onChangeText={value => {
+                  this.setState({password: value});
+                  console.log(password);
+                }}
                 placeholder="Password"
                 underlineColorAndroid="#111212"
                 style={styles.inputBox}></TextInput>
@@ -121,7 +148,11 @@ class App extends React.Component {
           </CardItem>
           <CardItem>
             <View style={styles.btn}>
-              <Button title="Sign In" color="#7D162E" />
+              <Button
+                title="Sign In"
+                onPress={this.submitFunction}
+                color="#7D162E"
+              />
             </View>
           </CardItem>
           <Text style={styles.footer}>
@@ -131,7 +162,7 @@ class App extends React.Component {
       </Card>
     );
 
-    const {screeHight, orientation} = this.state;
+    const {screeHight, orientation, userName, password, message} = this.state;
     return (
       <>
         <StatusBar barStyle="dark-content" ref="rootView" />
@@ -147,6 +178,7 @@ class App extends React.Component {
               flex: 1,
             }}>
             {orientation === 'portrait' ? portrait : landscape}
+            <Text style={{color: 'green', fontSize: 30}}>{message}</Text>
           </ImageBackground>
         </SafeAreaView>
       </>
