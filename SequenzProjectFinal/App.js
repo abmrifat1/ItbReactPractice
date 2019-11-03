@@ -40,6 +40,7 @@ import {
 } from 'native-base';
 import mainBg from './src/img/main-bg.jpg';
 import logo from './src/img/logo.png';
+import AsyncStorage from '@react-native-community/async-storage';
 
 class App extends React.Component {
   constructor(props) {
@@ -47,13 +48,14 @@ class App extends React.Component {
     this.state = {
       screeHight: Dimensions.get('window').height,
       orientation: 'portrait',
-      userName: '',
-      password: '',
+      userName: 'testmarketplacevendortech',
+      password: 'password',
       message: '',
+      forgetSms: 'Forgot your password? Click here to reset.',
     };
   }
 
-  submitFunction = async () => {
+  submitFunction = () => {
     let {userName, password, message} = this.state;
     const BaseUrl = 'http://test.sequenzainc.com';
     const parameters = {
@@ -61,17 +63,48 @@ class App extends React.Component {
       password: password,
     };
     const headers = {headers: {Accept: 'application/json, text/plain, */*'}};
-    const dataPost = await axios.post(
-      BaseUrl + '/api/auth/login',
-      parameters,
-      headers,
-    );
-    if (dataPost) {
-      this.setState({message: dataPost.status});
-    }
+    axios
+      .post(BaseUrl + '/api/auth/login', parameters, headers)
+      .then(response => {
+        console.log(response);
+
+        this.setState({message: response.data.msg});
+        try {
+          AsyncStorage.setItem(
+            'userCred',
+            JSON.stringify(response.data.data.account),
+          );
+          AsyncStorage.setItem(
+            'userRef',
+            JSON.stringify(response.data.data.jwt),
+          );
+        } catch (err) {
+          console.log(err);
+        }
+      })
+      .catch(error => {
+        this.setState({message: error.response.data.msg});
+        console.log(error.message);
+        console.log(error.response);
+      });
   };
 
+  async componentDidMount() {
+    const value = await AsyncStorage.getItem('userCred');
+    const tokenValue = await AsyncStorage.getItem('userRef');
+    console.log(value);
+    console.log(tokenValue);
+  }
+
   render() {
+    const {
+      screeHight,
+      orientation,
+      userName,
+      password,
+      message,
+      forgetSms,
+    } = this.state;
     const portrait = (
       <Card style={styles.cardStyle}>
         <ScrollView
@@ -88,17 +121,21 @@ class App extends React.Component {
                   this.setState({userName: value});
                   console.log(userName);
                 }}
+                value={userName}
                 placeholder="Username"
                 underlineColorAndroid="#111212"
-                style={styles.inputBox}></TextInput>
+                style={styles.inputBox}
+              />
               <TextInput
                 onChangeText={value => {
                   this.setState({password: value});
                   console.log(password);
                 }}
+                value={password}
                 placeholder="Password"
                 underlineColorAndroid="#111212"
-                style={styles.inputBox}></TextInput>
+                style={styles.inputBox}
+              />
             </View>
           </CardItem>
           <CardItem>
@@ -135,7 +172,8 @@ class App extends React.Component {
                 }}
                 placeholder="Username"
                 underlineColorAndroid="#111212"
-                style={styles.inputBox}></TextInput>
+                style={styles.inputBox}
+              />
               <TextInput
                 onChangeText={value => {
                   this.setState({password: value});
@@ -143,7 +181,8 @@ class App extends React.Component {
                 }}
                 placeholder="Password"
                 underlineColorAndroid="#111212"
-                style={styles.inputBox}></TextInput>
+                style={styles.inputBox}
+              />
             </View>
           </CardItem>
           <CardItem>
@@ -155,14 +194,11 @@ class App extends React.Component {
               />
             </View>
           </CardItem>
-          <Text style={styles.footer}>
-            Forgot your password? Click here to reset.
-          </Text>
+          <Text style={styles.footer}>{forgetSms}</Text>
         </ScrollView>
       </Card>
     );
 
-    const {screeHight, orientation, userName, password, message} = this.state;
     return (
       <>
         <StatusBar barStyle="dark-content" ref="rootView" />
