@@ -37,6 +37,7 @@ class App extends React.Component {
       }, 2000),
     );
   };
+  ////////
   async componentDidMount() {
     let {isLoading} = this.state;
     const data = await this.performTimeConsumingTask();
