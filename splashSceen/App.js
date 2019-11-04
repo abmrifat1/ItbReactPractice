@@ -51,7 +51,7 @@ class App extends React.Component {
     if (this.state.isLoading) {
       return <Splash />;
     }
-
+    //////////////////
     return (
       <View style={styles.container}>
         <Text style={styles.welcome}>Welcome to React Native!</Text>
