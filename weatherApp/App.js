@@ -52,9 +52,16 @@ const App = () => {
       setIcon(pic);
     }
   };
+  const getProfile = async () => {
+    const Url = 'http://test.sequenzainc.com';
+    const Info = await axios.get(Url + '/api/account/18');
+    const profileInfo = await Info.data;
+    console.log(profileInfo);
+  };
 
   useEffect(() => {
     getTempInfo();
+   // getProfile();
   });
 
   return (
@@ -109,7 +116,6 @@ const App = () => {
                     ? (currentTemp.main.temp_max - 273).toFixed(1) + '°'
                     : ''}
                 </Text>
-               
 
                 <Text style={{marginTop: 6, paddingRight: 5, paddingLeft: 10}}>
                   <Icon name="long-arrow-down" color="white" size={16}></Icon>
