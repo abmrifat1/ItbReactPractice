@@ -39,6 +39,11 @@ class Home extends Component {
   render() {
     return (
       <View style={{flex: 1, alignItems: 'center', justifyContent: 'center'}}>
+        <Button
+          title="Sign In"
+          color="#7D162E"
+          onPress={() => this.props.navigation.navigate('New')}
+        />
         <Text> {this.state.counter}</Text>
         <Button
           title="count"
