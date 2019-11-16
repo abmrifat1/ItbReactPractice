@@ -9,7 +9,7 @@ export default class ModalEx extends React.Component {
     const modal = (
       <Modal
         animationType={'fade'}
-        transparent={false}
+        transparent={true}
         visible={this.state.isVisible}
         onRequestClose={() => {
           console.log('Modal has been closed.');
