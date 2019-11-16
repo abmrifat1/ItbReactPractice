@@ -6,33 +6,40 @@ export default class ModalEx extends React.Component {
     isVisible: false, //state of modal default false
   };
   render() {
+    const modal = (
+      <Modal
+        animationType={'fade'}
+        transparent={false}
+        visible={this.state.isVisible}
+        onRequestClose={() => {
+          console.log('Modal has been closed.');
+        }}>
+        {/*All views of Modal*/}
+        <View style={styles.modal}>
+          <Text style={styles.text}>Modal is open!</Text>
+          <Button
+            title="Click To Close Modal"
+            onPress={() => {
+              this.setState({isVisible: !this.state.isVisible});
+            }}
+          />
+        </View>
+      </Modal>
+    );
+    const btn = (
+      <Button
+        title="Click To Open Modal"
+        onPress={() => {
+          this.setState({isVisible: true});
+        }}
+      />
+    );
     return (
       <View style={styles.container}>
-        <Modal
-          animationType={'fade'}
-          transparent={false}
-          visible={this.state.isVisible}
-          onRequestClose={() => {
-            console.log('Modal has been closed.');
-          }}>
-          {/*All views of Modal*/}
-          <View style={styles.modal}>
-            <Text style={styles.text}>Modal is open!</Text>
-            <Button
-              title="Click To Close Modal"
-              onPress={() => {
-                this.setState({isVisible: !this.state.isVisible});
-              }}
-            />
-          </View>
-        </Modal>
+        {this.state.isVisible === true ? modal : btn}
+        <Text>hhh</Text>
+
         {/*Button will change state to true and view will re-render*/}
-        <Button
-          title="Click To Open Modal"
-          onPress={() => {
-            this.setState({isVisible: true});
-          }}
-        />
       </View>
     );
   }
